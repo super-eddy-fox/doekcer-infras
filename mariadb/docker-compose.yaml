@@ -1,0 +1,26 @@
+# Use root/example as user/password credentials
+version: '3'
+
+services:
+  mairadb_ulala1:
+    # 'database'서비스에서 참조할 이미지
+    image: mariadb:10.7.1
+    container_name: mariadb_container
+    ports:
+      - "3308:3306"
+    restart: always
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    environment:
+      # 환경 설정에 필요한 설정들. server코드와 싱크를 맞추어야 한다.
+      MYSQL_ROOT_PASSWORD: ulala123!@#
+#      MYSQL_DATABASE: mydb
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: lifemmo123!@#
+      TZ: UTC
+    volumes:
+      - ./mairadb_ulala/storage:/var/lib/mysql/ #storage 파일 외부 저장 위치 지정
+      - ./mairadb_ulala/log:/var/log/mysql # 로그파일 외부지정
+      - ./mysqlconf:/etc/mysql/conf.d #config 파일 지정
+      - ./initdb:/docker-entrypoint-initdb.d # 디렉토리 지정

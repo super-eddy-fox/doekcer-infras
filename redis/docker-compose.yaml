@@ -1,0 +1,19 @@
+services:
+  redis_ulala_1:
+    image: redis:6.0.8-buster
+    container_name: redis_ulala_1
+    ports:
+      - "7379:7379"
+    # network_mode: "host"
+    volumes:
+      - ./conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/master01:/data
+  redis_ulala_2:
+    image: redis:6.0.8-buster
+    container_name: redis_ulala_2
+    ports:
+      - "7380:7380"
+    #network_mode: "host"
+    volumes:
+      - ./conf/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/master02:/data

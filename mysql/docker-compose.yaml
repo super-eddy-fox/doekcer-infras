@@ -1,0 +1,41 @@
+version: "3"
+services:
+  mysql_ulala_1:
+    image: mysql:8.0.25
+    restart: always
+    container_name: mysql_ulala_1 # 컨테이너 이름 설정
+    ports:
+      - '3306:3306' # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)  <- 컨테이너 내부는 무조건 3306
+    command:
+     --character-set-server=utf8mb4
+     --collation-server=utf8mb4_unicode_ci
+    environment: # -e 옵션
+#      - MYSQL_DATABASE=mydb # database 생성
+      MYSQL_ROOT_PASSWORD: ulala123!@#  # MYSQL 패스워드 설정 옵션
+#      MYSQL_USER: ulala
+#      MYSQL_PASSWORD: lifemmo123!@#
+      TZ: UTC
+
+    volumes:
+      - ./mysql_ulala_1/storage:/var/lib/mysql/ #storage 파일 외부 저장 위치 지정
+      - ./mysql_ulala_1/log:/var/log/mysql # 로그파일 외부지정
+      - ./mysqlconf:/etc/mysql/conf.d #config 파일 지정
+      - ./initdb:/docker-entrypoint-initdb.d # 디렉토리 지정
+
+  mysql_ulala_2:
+    image: mysql:8.0.25
+    restart: always
+    container_name: mysql_ulala_2 # 컨테이너 이름 설정
+    ports:
+      - '3307:3306' # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)  <- 컨테이너 내부는 무조건 3306
+    environment: # -e 옵션
+#      - MYSQL_DATABASE=mydb  #database생성
+      MYSQL_ROOT_PASSWORD: ulala123!@#  # MYSQL 패스워드 설정 옵션
+      TZ: UTC
+    volumes:
+      - ./mysql_ulala_2/storage/:/var/lib/mysql
+      - ./mysql_ulala_2/log:/var/log/mysql
+      - ./mysqlconf:/etc/mysql/conf.d
+      - ./initdb/world_ddl.sql:/docker-entrypoint-initdb.d/world_ddl.sql #개별 파일 지정
+
+
